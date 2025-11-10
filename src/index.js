@@ -1,83 +1,94 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import "./index.css"
+import {pizzaData} from "./data.js" 
 
 function App() {
-    return (
-        <div>
-            <Header />
-            <Pizza />
-            <br />
-            <Pizza2 />
-            <br />
-            <Pizza3 />
-            <br />
-            <Pizza4 />
-            <br />
-            <Pizza5 />
-            <br />
-            <Pizza6 />
-        </div>
-    );
+  return (
+		<div className="container">
+			<Header />
+			<Menu />
+			<Footer />
+		</div>
+  );
 }
 
 function Header() {
-    return <h1>Andy's Pizza Co.</h1>
+  	return (
+		<div className="header">
+			<h1>Ka Seng's Pizza Co.</h1>
+		</div>
+	)
+}
+
+function Menu() {
+	return (
+		<div className="menu">
+			<h2>Our Menu</h2>
+			<Pizza />
+		</div>
+	)
+}
+
+
+function timeToHours(time) {
+  const [hours, minutes, seconds] = time.split(':').map(Number);
+  return hours;
+}
+
+let open = "10:00:00"
+let close = "22:00:00"
+let now = new Date();
+let current = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit'});
+
+const openTime = timeToHours(open);
+const closeTime = timeToHours(close);
+const currentTime = timeToHours(now.toLocaleTimeString('en-US', {hour12: false }));
+
+function Footer() {
+	let footerText;
+	let button;
+	if (currentTime > openTime && currentTime < closeTime) {
+		footerText = "We're currently open"
+		button =
+			<btn>
+				<div className="btn">
+					Order Here
+				</div>
+			</btn>
+	}
+	else {
+		footerText = "Sorry we're closed"
+	}
+	return (
+		<div>
+			<footer className="footer">{footerText}</footer>
+			Current time: {current}
+			{button}
+		</div>
+	)
 }
 
 function Pizza() {
-    return (
-        <div>
-            <img src="pizzas/focaccia.jpg"></img>
-            <h2>Focaccia Pizza</h2>
-        </div>
-    );
-}
-
-function Pizza2() {
-    return (
-        <div>
-            <img src="pizzas/funghi.jpg"></img>
-            <h2>Funghi Pizza</h2>
-        </div>
-    );
-}
-
-function Pizza3() {
-    return (
-        <div>
-            <img src="pizzas/margherita.jpg"></img>
-            <h2>Margherita Pizza</h2>
-        </div>
-    );
-}
-
-function Pizza4() {
-    return (
-        <div>
-            <img src="pizzas/prosciutto.jpg"></img>
-            <h2>Prosciutto Pizza</h2>
-        </div>
-    );
-}
-
-function Pizza5() {
-    return (
-        <div>
-            <img src="pizzas/salamino.jpg"></img>
-            <h2>Salamino Pizza</h2>
-        </div>
-    );
-}
-
-function Pizza6() {
-    return (
-        <div>
-            <img src="pizzas/spinaci.jpg"></img>
-            <h2>Spinaci Pizza</h2>
-        </div>
-    );
-}
-
+	return (
+		<ul className="no-bullets, pizzas">
+			{pizzaData.map(pizza => (
+				<li key={pizza.name}>
+					<div className="pizza">
+						<img 
+							src={pizza.photoName}
+							alt={pizza.name}
+						/>
+						<h3>{pizza.name}</h3>
+						<p>{pizza.ingredients}</p>
+						<p>Price: ${pizza.price}</p>
+						{pizza.soldOut && <p style={{ color: "red" }}>Sold Out!</p>}
+					</div>
+				</li>
+			))}
+		</ul>
+	);
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
