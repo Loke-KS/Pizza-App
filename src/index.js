@@ -32,7 +32,7 @@ function Menu() {
 
 
 function timeToHours(time) {
-  const [hours, minutes, seconds] = time.split(':').map(Number);
+  const [hours] = time.split(':').map(Number);
   return hours;
 }
 
